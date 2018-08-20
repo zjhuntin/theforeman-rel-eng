@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+. settings
+
+mkdir -p "$RPMDIR"
+cd "$RPMDIR"
+
+ls *.src.rpm | sed 's!\.src\.rpm$!!' | xargs -t -n20 -P2 koji write-signed-rpm $(echo $GPGKEY | tr 'A-Z' 'a-z')

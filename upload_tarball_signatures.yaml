@@ -1,0 +1,8 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: "Upload signatures"
+      copy:
+        src: "{{ item.key }}"
+        dest: "{{ item.value }}"
+      loop: "{{ files|dict2items }}"

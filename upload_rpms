@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+. settings
+
+~/dev/koji/cli/koji import-sig "$RPMDIR"/*.rpm

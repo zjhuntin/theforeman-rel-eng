@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+. settings
+
+copy_gpg_key
+
+cat > ~/.rpmmacros <<EOF
+%_gpg_path $KEYDIR
+%_gpg_name $SIGNER
+EOF
+
+rpmsign --addsign "$RPMDIR"/*.rpm

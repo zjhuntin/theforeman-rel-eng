@@ -1,0 +1,37 @@
+#!/bin/bash -e
+
+. settings
+PROJECTS="foreman foreman-proxy foreman-installer foreman-selinux"
+
+mkdir -p "$TARDIR"
+
+download() {
+	for project in $PROJECTS ; do
+		filename="$project-$FULLVERSION.tar.bz2"
+		wget "https://downloads.theforeman.org/$project/$filename" -O "$TARDIR/$filename"
+	done
+}
+
+sign() {
+	copy_gpg_key
+	for project in $PROJECTS ; do
+		filename="$project-$FULLVERSION.tar.bz2"
+		gpg2 --homedir "$KEYDIR" -b -u "$SIGNER" "$TARDIR/$filename"
+	done
+}
+
+upload() {
+	local files="{'files': {"
+	for project in $PROJECTS ; do
+		filename="$project-$FULLVERSION.tar.bz2"
+		files+="'${TARDIR}/${filename}': '${DOCROOT}/${project}/${filename}.sig',"
+	done
+	files+="}}"
+
+	copy_unix_pass
+	ansible-playbook --ask-become-pass --inventory=$HOSTS --extra-vars="$files" upload_tarball_signatures.yaml
+}
+
+download
+sign
+upload
