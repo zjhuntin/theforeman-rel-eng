@@ -5,6 +5,7 @@ RELEASEDIR="releases/$VERSION"
 RPMDIR="$RELEASEDIR/rpms"
 KEYDIR="$RELEASEDIR/gnupg"
 TARDIR="$RELEASEDIR/tarballs"
+EXTRASDIR="$RELEASEDIR/extras"
 HOSTS="theforeman.org,"
 DOCROOT="/var/www/vhosts/downloads/htdocs"
 

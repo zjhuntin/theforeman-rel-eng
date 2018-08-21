@@ -9,4 +9,8 @@ cat > ~/.rpmmacros <<EOF
 %_gpg_name $SIGNER
 EOF
 
-rpmsign --addsign "$RPMDIR"/*.rpm
+if [[ -n $1 ]] ; then
+	rpmsign --addsign "$@"
+else
+	rpmsign --addsign "$RPMDIR"/*.rpm
+fi
