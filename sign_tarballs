@@ -24,7 +24,7 @@ upload() {
 	local files="{'files': {"
 	for project in $PROJECTS ; do
 		filename="$project-$FULLVERSION.tar.bz2"
-		files+="'${TARDIR}/${filename}': '${DOCROOT}/${project}/${filename}.sig',"
+		files+="'${TARDIR}/${filename}.sig': '${DOCROOT}/${project}/${filename}.sig',"
 	done
 	files+="}}"
 
