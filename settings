@@ -8,13 +8,14 @@ TARDIR="$RELEASEDIR/tarballs"
 EXTRASDIR="$RELEASEDIR/extras"
 HOSTS="theforeman.org,"
 DOCROOT="/var/www/vhosts/downloads/htdocs"
+PASS_NAME_GPG="theforeman/release/$VERSION-gpg"
 
 # Load settings per release
 # Expected: GPGKEY FULLVERSION
 . "$RELEASEDIR/settings"
 
 copy_gpg_key() {
-	pass show -c "theforeman/release/$VERSION-gpg"
+	pass show -c "$PASS_NAME_GPG"
 }
 
 copy_unix_pass() {
