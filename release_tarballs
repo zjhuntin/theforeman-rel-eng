@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+. settings
+
+./ci-jobs tarballs-release $VERSION
