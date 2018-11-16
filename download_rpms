@@ -6,7 +6,8 @@ mkdir -p "$RPMDIR"
 cd "$RPMDIR"
 
 for j in $OSES; do
-  tags=foreman-$VERSION-$j
+  tags="foreman-$VERSION-$j"
+  [[ -n $ROR_BASE_TAG ]] && tags="$tags $ROR_BASE_TAG-$j"
   [[ $j =~ rhel ]] && tags="$tags foreman-$VERSION-nonscl-$j"
   for i in $tags; do
     koji list-tagged --latest --quiet --inherit --sigs $i
