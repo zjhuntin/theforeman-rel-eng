@@ -8,6 +8,9 @@ import click
 import jenkins
 
 
+JOBS = ['ping', 'tarballs-release', 'release_packages']
+
+
 def parse_pass_lines(lines):
     for line in lines:
         if not line.startswith('#') and ': ' in line:
@@ -47,7 +50,7 @@ def get_connection(url='https://ci.theforeman.org', username=None,
 
 
 @click.command()
-@click.argument('job', type=click.Choice(['ping', 'tarballs-release']))
+@click.argument('job', type=click.Choice(JOBS))
 @click.argument('version')
 def build(job, version):
     """
@@ -69,9 +72,9 @@ def build(job, version):
 
     server.build_job(job, parameters)
 
-    # For some reason we don't just get a job ID back - probably because it can be queued
-    #last_build_number = server.get_job_info(job)['lastBuild']['number']
-    build_info = server.get_build_info(job, 'lastBuild')
+    # We don't just get a job ID back - probably because it can be queued
+    last_build_number = server.get_job_info(job)['lastBuild']['number']
+    build_info = server.get_build_info(job, last_build_number)
     click.echo(build_info)
 
 
