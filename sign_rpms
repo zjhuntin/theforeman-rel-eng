@@ -10,7 +10,7 @@ cat > ~/.rpmmacros <<EOF
 EOF
 
 if [[ -n $1 ]] ; then
-	rpmsign --addsign "$@"
+	echo "$@" | xargs $XARGS_JOBS rpmsign --addsign
 else
-	rpmsign --addsign "$RPMDIR"/*.rpm
+	find "$RPMDIR" -name '*.rpm' | xargs $XARGS_JOBS rpmsign --addsign
 fi

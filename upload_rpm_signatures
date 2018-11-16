@@ -2,4 +2,4 @@
 
 . settings
 
-~/dev/koji/cli/koji import-sig "$RPMDIR"/*.rpm
+find "$RPMDIR" -name '*.rpm' | xargs $XARGS_JOBS ~/dev/koji/cli/koji import-sig

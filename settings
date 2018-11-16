@@ -10,6 +10,7 @@ EXTRASDIR="$RELEASEDIR/extras"
 HOSTS="theforeman.org,"
 DOCROOT="/var/www/vhosts/downloads/htdocs"
 PASS_NAME_GPG="theforeman/release/$VERSION-gpg"
+XARGS_JOBS="-n 20 -P 4"
 
 # Load settings per release
 # Expected: GPGKEY FULLVERSION
