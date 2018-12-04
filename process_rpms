@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+. settings
+
+PROCESSED_DIR="$RPMDIR.processed"
+mkdir -p "$PROCESSED_DIR"
+mv -i "$RPMDIR"/* "$PROCESSED_DIR"
