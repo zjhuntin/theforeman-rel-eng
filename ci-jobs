@@ -84,7 +84,13 @@ def build(job, version, wait=True):
             sleep(1)
 
         build_info = server.get_build_info(job, last_build_number)
-        click.echo('URL {}'.format(build_info['url']))
+        click.echo(build_info['url'])
+
+        while build_info['building']:
+            sleep(1)
+            build_info = server.get_build_info(job, last_build_number)
+
+        click.echo(build_info['result'])
 
 
 if __name__ == '__main__':
