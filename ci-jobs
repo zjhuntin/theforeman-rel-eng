@@ -3,12 +3,13 @@
 
 import getpass
 import subprocess
+from time import sleep
 
 import click
 import jenkins
 
-
-JOBS = ['ping', 'tarballs-release', 'release_packages']
+JOBS = ['ping', 'tarballs-release', 'release_packages', 'release_mash',
+        'release_push_deb', 'release_push_rpm']
 
 
 def parse_pass_lines(lines):
@@ -52,7 +53,7 @@ def get_connection(url='https://ci.theforeman.org', username=None,
 @click.command()
 @click.argument('job', type=click.Choice(JOBS))
 @click.argument('version')
-def build(job, version):
+def build(job, version, wait=True):
     """
     Build a job"
     """
@@ -70,12 +71,20 @@ def build(job, version):
         'major_version': f'{major}.{minor}',
     }
 
+    # Get the last build so we can poll later
+    build_number_before = server.get_job_info(job)['lastBuild']['number']
+
     server.build_job(job, parameters)
 
-    # We don't just get a job ID back - probably because it can be queued
-    last_build_number = server.get_job_info(job)['lastBuild']['number']
-    build_info = server.get_build_info(job, last_build_number)
-    click.echo(build_info)
+    if wait:
+        while True:
+            last_build_number = server.get_job_info(job)['lastBuild']['number']
+            if last_build_number > build_number_before:
+                break
+            sleep(1)
+
+        build_info = server.get_build_info(job, last_build_number)
+        click.echo('URL {}'.format(build_info['url']))
 
 
 if __name__ == '__main__':
