@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+. settings
+
+cd "$PACKAGING_DIR"
+
+git fetch $PACKAGING_GIT_REMOTE
+git checkout -b deb/release-$FULLVERSION $PACKAGING_GIT_REMOTE/deb/$VERSION
+
+scripts/changelog.rb -v $FULLVERSION-1 -m "$FULLVERSION released" debian/*/*/changelog
+git add debian/*/*/changelog
+git commit -m "Release $FULLVERSION"
+git phr -b deb/$VERSION -m "Release $FULLVERSION"

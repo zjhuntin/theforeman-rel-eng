@@ -1,0 +1,30 @@
+#!/bin/bash -e
+
+. settings
+
+cd "$PACKAGING_DIR"
+
+git fetch $PACKAGING_GIT_REMOTE
+git checkout -b rpm/release-$FULLVERSION $PACKAGING_GIT_REMOTE/rpm/$VERSION
+
+for package in $RPM_PACKAGES ; do
+	(
+		cd packages/foreman/$package
+		sed -i 's/^\(Version:\s\+\).\+$/\1'$FULLVERSION'/ ; s/^\(%global release\s\+\).\+$/\11/' $package.spec
+		git add $package.spec
+		if [[ $package != foreman-release ]] ; then
+			git rm -f *.tar.bz2
+			spectool -g $package.spec
+			git annex add *.tar.bz2
+		fi
+	)
+done
+
+obal changelog --message "Release $FULLVERSION" $RPM_PACKAGES
+for package in $RPM_PACKAGES ; do
+	git add packages/foreman/$package/$package.spec
+done
+
+git commit -m "- Release $FULLVERSION"
+
+git phr -b rpm/$VERSION -m "Release $FULLVERSION"
