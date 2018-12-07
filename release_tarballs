@@ -2,4 +2,4 @@
 
 . settings
 
-./ci-jobs tarballs-release $VERSION
+./ci-jobs tarballs-release $FULLVERSION
