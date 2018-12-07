@@ -13,7 +13,7 @@ PASS_NAME_GPG="theforeman/release/$VERSION-gpg"
 XARGS_JOBS="-n 20 -P 4"
 PACKAGING_DIR=~/dev/foreman-packaging
 PACKAGING_GIT_REMOTE=origin
-RPM_PACKAGES=foreman foreman-installer foreman-proxy foreman-release foreman-selinux
+RPM_PACKAGES="foreman foreman-installer foreman-proxy foreman-release foreman-selinux"
 
 # Load settings per release
 # Expected: GPGKEY FULLVERSION
