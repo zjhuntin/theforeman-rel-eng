@@ -1,0 +1,4 @@
+GPGKEY="694fa479"
+VERSION="1.19"
+FULLVERSION="$VERSION.1"
+RPM_PACKAGES=foreman foreman-installer foreman-proxy foreman-selinux

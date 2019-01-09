@@ -1,2 +1,6 @@
-releases/
+releases/*/extras
+releases/*/gnupg
+releases/*/rpms
+releases/*/rpms.processed
+releases/*/tarballs
 upload_tarball_signatures.retry
