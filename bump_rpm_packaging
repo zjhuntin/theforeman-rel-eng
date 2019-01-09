@@ -20,11 +20,11 @@ for package in $RPM_PACKAGES ; do
 	)
 done
 
-obal changelog --message "Release $FULLVERSION" $RPM_PACKAGES
+obal changelog --message "- Release $FULLVERSION" $RPM_PACKAGES
 for package in $RPM_PACKAGES ; do
 	git add packages/foreman/$package/$package.spec
 done
 
-git commit -m "- Release $FULLVERSION"
+git commit -m "Release $FULLVERSION"
 
 git phr -b rpm/$VERSION -m "Release $FULLVERSION"
