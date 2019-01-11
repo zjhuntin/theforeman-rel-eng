@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+. settings
+
+if [[ ! -d $KEYDIR ]] ; then
+	echo "Keydir $KEYDIR doesn't exist"
+	exit 1
+fi
+
+pass show -c "$PASS_NAME_GPG"
+gpg2 --homedir $KEYDIR --export-secret-keys -a 0x$FULLGPGKEY | pass insert --multiline "$PASS_NAME_KEY"

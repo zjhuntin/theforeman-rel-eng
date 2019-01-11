@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+. settings
+
+if [[ ! -d $KEYDIR ]] ; then
+	echo "Keydir $KEYDIR doesn't exist"
+	exit 1
+fi
+
+gpg2 --homedir $KEYDIR --armor --export 0x$FULLGPGKEY | gpg2 --import
+
+gpg2 --edit-key 0x$FULLGPGKEY
