@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+. settings
+
+if [[ ! -d $KEYDIR ]] ; then
+	echo "Keydir $KEYDIR doesn't exist"
+	exit 1
+fi
+
+gpg2 --homedir $KEYDIR --fingerprint $FULLGPGKEY
+gpg2 --homedir $KEYDIR --armor --export $FULLGPGKEY > $FULLGPGKEY.pub
