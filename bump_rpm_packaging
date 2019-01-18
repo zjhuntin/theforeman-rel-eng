@@ -10,10 +10,14 @@ git checkout -b rpm/release-$FULLVERSION $PACKAGING_GIT_REMOTE/rpm/$VERSION
 for package in $RPM_PACKAGES ; do
 	(
 		cd packages/foreman/$package
-		sed -i 's/^\(Version:\s\+\).\+$/\1'$FULLVERSION'/ ; s/^\(%global release\s\+\).\+$/\11/' $package.spec
+		if [[ $FULLVERSION == *-RC* ]] ; then
+			sed -i 's/^\(Version:\s\+\).\+$/\1'${FULLVERSION%%-RC*}'/ ; s/^\(%global prerelease\s\+\).\+$/\1'${FULLVERSION##*-}'/' $package.spec
+		else
+			sed -i 's/^\(Version:\s\+\).\+$/\1'$FULLVERSION'/ ; s/^\(%global release\s\+\).\+$/\11/ ; s/^\(%global prerelease\s\)/#\1' $package.spec
+		fi
 		git add $package.spec
 		if [[ $package != foreman-release ]] ; then
-			git rm -f *.tar.bz2
+			git rm --ignore-unmatch --force *.tar.bz2
 			spectool -g $package.spec
 			git annex add *.tar.bz2
 		fi
