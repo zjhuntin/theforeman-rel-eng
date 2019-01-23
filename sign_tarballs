@@ -1,20 +1,10 @@
 #!/bin/bash -e
 
 . settings
-PROJECTS="foreman foreman-proxy foreman-installer foreman-selinux"
-
-mkdir -p "$TARDIR"
-
-download() {
-	for project in $PROJECTS ; do
-		filename="$project-$FULLVERSION.tar.bz2"
-		wget "https://downloads.theforeman.org/$project/$filename" -O "$TARDIR/$filename"
-	done
-}
 
 sign() {
 	copy_gpg_key
-	for project in $PROJECTS ; do
+	for project in $TAR_PROJECTS ; do
 		filename="$project-$FULLVERSION.tar.bz2"
 		gpg2 --homedir "$KEYDIR" -b -u "$SIGNER" "$TARDIR/$filename"
 	done
@@ -22,7 +12,7 @@ sign() {
 
 upload() {
 	local files="{'files': {"
-	for project in $PROJECTS ; do
+	for project in $TAR_PROJECTS ; do
 		filename="$project-$FULLVERSION.tar.bz2"
 		files+="'${TARDIR}/${filename}.sig': '${DOCROOT}/${project}/${filename}.sig',"
 	done
@@ -32,6 +22,10 @@ upload() {
 	ansible-playbook --ask-become-pass --inventory=$HOSTS --extra-vars="$files" upload_tarball_signatures.yaml
 }
 
-download
+if [[ ! -d "$TARDIR" ]] ; then
+	echo "Tar directory $TARDIR doesn't exist"
+	exit 1
+fi
+
 sign
 upload

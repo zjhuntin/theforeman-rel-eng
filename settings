@@ -14,6 +14,7 @@ PASS_NAME_KEY="theforeman/release/$VERSION-key"
 XARGS_JOBS="-n 20 -P 4"
 PACKAGING_DIR=~/dev/foreman-packaging
 PACKAGING_GIT_REMOTE=origin
+TAR_PROJECTS="foreman foreman-proxy foreman-installer foreman-selinux"
 RPM_PACKAGES="foreman foreman-installer foreman-proxy foreman-release foreman-selinux"
 
 # Load settings per release

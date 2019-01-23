@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+. settings
+
+download() {
+	for project in $TAR_PROJECTS ; do
+		filename="$project-$FULLVERSION.tar.bz2"
+		wget "https://downloads.theforeman.org/$project/$filename" -O "$TARDIR/$filename"
+	done
+}
+
+mkdir -p "$TARDIR"
+download
