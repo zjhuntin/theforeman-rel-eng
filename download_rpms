@@ -5,15 +5,15 @@
 mkdir -p "$RPMDIR"
 cd "$RPMDIR"
 
-for j in $OSES; do
-  tags="foreman-$VERSION-$j"
-  [[ -n $ROR_BASE_TAG ]] && tags="$tags $ROR_BASE_TAG-$j"
-  [[ $j =~ rhel ]] && tags="$tags foreman-$VERSION-nonscl-$j"
-  for i in $tags; do
-    koji list-tagged --latest --quiet --inherit --sigs $i
+for os in $OSES; do
+  tags="foreman-$VERSION-$os"
+  [[ -n $ROR_BASE_TAG ]] && tags="$tags $ROR_BASE_TAG-$os"
+  [[ $os =~ rhel ]] && tags="$tags foreman-$VERSION-nonscl-$os"
+  for tag in $tags; do
+    koji list-tagged --latest --quiet --inherit --sigs $tag
   done \
     | sed 's!^!:!' \
     | perl -ane '$F[1] =~ s!\.src$!! or next; $R{$F[1]} = 1; $S{$F[1]} = 1 if lc($F[0]) eq lc(":'$GPGKEY'");
       END { print map "$_\n", grep { not exists $S{$_} } sort keys %R }' \
-    | xargs -P 2 -n 1 koji download-build --debuginfo $i
+    | xargs -P 2 -n 1 koji download-build --debuginfo $tag
 done
