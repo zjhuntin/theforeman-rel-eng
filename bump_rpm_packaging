@@ -13,7 +13,7 @@ for package in $RPM_PACKAGES ; do
 		if [[ $FULLVERSION == *-RC* ]] ; then
 			sed -i 's/^\(Version:\s\+\).\+$/\1'${FULLVERSION%%-RC*}'/ ; s/^\(%global prerelease\s\+\).\+$/\1'${FULLVERSION##*-}'/' $package.spec
 		else
-			sed -i 's/^\(Version:\s\+\).\+$/\1'$FULLVERSION'/ ; s/^\(%global release\s\+\).\+$/\11/ ; s/^\(%global prerelease\s\)/#\1' $package.spec
+			sed -i 's/^\(Version:\s\+\).\+$/\1'$FULLVERSION'/ ; s/^\(%global release\s\+\).\+$/\11/ ; s/^\(%global prerelease\s\)/#\1/' $package.spec
 		fi
 		git add $package.spec
 		if [[ $package != foreman-release ]] ; then
