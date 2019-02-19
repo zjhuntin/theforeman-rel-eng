@@ -2,12 +2,16 @@
 
 . settings
 
+REMOTE_BRANCH=deb/$VERSION
+
 cd "$PACKAGING_DIR"
 
 git fetch $PACKAGING_GIT_REMOTE
-git checkout -b deb/release-$FULLVERSION $PACKAGING_GIT_REMOTE/deb/$VERSION
+git checkout -b deb/release-$FULLVERSION $PACKAGING_GIT_REMOTE/$REMOTE_BRANCH
 
 scripts/changelog.rb -v ${FULLVERSION/-RC/~rc}-1 -m "$FULLVERSION released" debian/*/*/changelog
 git add debian/*/*/changelog
+
 git commit -m "Release $FULLVERSION"
-git phr -b deb/$VERSION -m "Release $FULLVERSION"
+
+git push $PACKAGING_GIT_REMOTE HEAD:$REMOTE_BRANCH

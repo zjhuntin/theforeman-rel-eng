@@ -2,10 +2,12 @@
 
 . settings
 
+REMOTE_BRANCH=rpm/$VERSION
+
 cd "$PACKAGING_DIR"
 
 git fetch $PACKAGING_GIT_REMOTE
-git checkout -b rpm/release-$FULLVERSION $PACKAGING_GIT_REMOTE/rpm/$VERSION
+git checkout -b rpm/release-$FULLVERSION $PACKAGING_GIT_REMOTE/$REMOTE_BRANCH
 
 for package in $RPM_PACKAGES ; do
 	(
@@ -31,4 +33,4 @@ done
 
 git commit -m "Release $FULLVERSION"
 
-git phr -b rpm/$VERSION -m "Release $FULLVERSION"
+git push $PACKAGING_GIT_REMOTE HEAD:$REMOTE_BRANCH
