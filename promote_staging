@@ -1,0 +1,6 @@
+#!/bin/bash -e
+
+. settings
+
+./ci-jobs --no-wait release_push_rpm $FULLVERSION
+./ci-jobs --no-wait release_push_deb $FULLVERSION

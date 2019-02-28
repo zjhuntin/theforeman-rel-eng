@@ -53,7 +53,8 @@ def get_connection(url='https://ci.theforeman.org', username=None,
 @click.command()
 @click.argument('job', type=click.Choice(JOBS))
 @click.argument('version')
-def build(job, version, wait=True):
+@click.option('--wait/--no-wait', default=True)
+def build(job, version, wait):
     """
     Build a job"
     """
@@ -76,16 +77,16 @@ def build(job, version, wait=True):
 
     server.build_job(job, parameters)
 
+    while True:
+        last_build_number = server.get_job_info(job)['lastBuild']['number']
+        if last_build_number > build_number_before:
+            break
+        sleep(1)
+
+    build_info = server.get_build_info(job, last_build_number)
+    click.echo(build_info['url'])
+
     if wait:
-        while True:
-            last_build_number = server.get_job_info(job)['lastBuild']['number']
-            if last_build_number > build_number_before:
-                break
-            sleep(1)
-
-        build_info = server.get_build_info(job, last_build_number)
-        click.echo(build_info['url'])
-
         while build_info['building']:
             sleep(1)
             build_info = server.get_build_info(job, last_build_number)
