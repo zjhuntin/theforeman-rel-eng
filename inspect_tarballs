@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+. settings
+
+filenames=()
+for project in $TAR_PROJECTS ; do
+	filenames+=("${TARDIR}/${project}-${FULLVERSION}.tar.bz2")
+done
+file-roller "${filenames[@]}"
