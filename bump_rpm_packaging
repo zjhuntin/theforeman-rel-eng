@@ -33,4 +33,8 @@ done
 
 git commit -m "Release $FULLVERSION"
 
-git push $PACKAGING_GIT_REMOTE HEAD:$REMOTE_BRANCH
+if [[ $PACKAGING_PR == true ]] ; then
+	git phr -m "Release $FULLVERSION" -b "$REMOTE_BRANCH"
+else
+	git push $PACKAGING_GIT_REMOTE HEAD:$REMOTE_BRANCH
+fi
