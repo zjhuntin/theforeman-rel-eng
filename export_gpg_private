@@ -7,5 +7,11 @@ if [[ ! -d $KEYDIR ]] ; then
 	exit 1
 fi
 
+if [[ -z $FULLGPGKEY ]] ; then
+	echo "FULLGPGKEY must be set"
+	gpg2 --homedir "$KEYDIR" --list-key "$SIGNER"
+	exit 2
+fi
+
 pass show -c "$PASS_NAME_GPG"
-gpg2 --homedir $KEYDIR --export-secret-keys -a 0x$FULLGPGKEY | pass insert --multiline "$PASS_NAME_KEY"
+gpg2 --homedir "$KEYDIR" --export-secret-keys -a "$FULLGPGKEY" | pass insert --multiline "$PASS_NAME_KEY"

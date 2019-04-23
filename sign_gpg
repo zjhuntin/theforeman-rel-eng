@@ -7,6 +7,10 @@ if [[ ! -d $KEYDIR ]] ; then
 	exit 1
 fi
 
-gpg2 --homedir $KEYDIR --armor --export 0x$FULLGPGKEY | gpg2 --import
+if [[ -z $FULLGPGKEY ]] ; then
+	echo "FULLGPGKEY must be set"
+	exit 2
+fi
 
-gpg2 --edit-key 0x$FULLGPGKEY
+gpg2 --homedir "$KEYDIR" --armor --export "$FULLGPGKEY" | gpg2 --import
+gpg2 --edit-key "$FULLGPGKEY"

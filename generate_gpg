@@ -19,7 +19,7 @@ cat > $GPG_SETTINGS <<EOF
      Key-Length: 4096
      Name-Real: Foreman Automatic Signing Key
      Name-Comment: $VERSION
-     Name-Email: packages@theforeman.org
+     Name-Email: $SIGNER
      Expire-Date: 1y
      Passphrase: $(pass show "$PASS_NAME_GPG")
      # Do a commit here, so that we can later print "done" :-)

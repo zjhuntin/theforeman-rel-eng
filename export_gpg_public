@@ -7,5 +7,26 @@ if [[ ! -d $KEYDIR ]] ; then
 	exit 1
 fi
 
-gpg2 --homedir $KEYDIR --fingerprint $FULLGPGKEY
-gpg2 --homedir $KEYDIR --armor --export $FULLGPGKEY > $FULLGPGKEY.pub
+if [[ -z $FULLGPGKEY ]] ; then
+	echo "FULLGPGKEY must be set"
+	gpg2 --homedir "$KEYDIR" --list-key "$SIGNER"
+	exit 2
+fi
+
+CHECKOUT="${GIT_DIR}/theforeman.org"
+
+gpg2 --homedir "$KEYDIR" --armor --export "$FULLGPGKEY" > "${CHECKOUT}/static/keys/${FULLGPGKEY}.pub"
+
+echo "Add this to ${CHECKOUT}/security.md"
+gpg2 --homedir "$KEYDIR" --fingerprint "$FULLGPGKEY"
+cat <<EOF
+      <tr>
+        <td><a href="{{ site.baseurl }}/static/keys/${FULLGPGKEY}.pub">${FULLGPGKEY}</a></td>
+        <td>FIXME: fingerprint</td>
+        <td>Foreman Release Signing Key (${VERSION})</td>
+	<td style='white-space:nowrap'>$(date +%Y-%m-%d) (FIXME: check)</td>
+        <td style='white-space:nowrap'>FIXME: end date</td>
+        <td style='white-space:nowrap'></td>
+        <td></td>
+      </tr>
+EOF
