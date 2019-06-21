@@ -1,6 +1,7 @@
 VERSION="1.22"
 SIGNER="packages@theforeman.org"
 OSES="rhel7"
+CLIENT_OSES="rhel5 rhel6 rhel7 sles11 sles12 fedora28 fedora29"
 RELEASEDIR="releases/$VERSION"
 RPMDIR="$RELEASEDIR/rpms"
 KEYDIR="$RELEASEDIR/gnupg"

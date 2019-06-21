@@ -1,2 +1,3 @@
 GPGKEY="565ea533"
 FULLVERSION="1.20.2"
+CLIENT_OSES="rhel5 rhel6 rhel7 sles11 sles12 fedora27 fedora28"
