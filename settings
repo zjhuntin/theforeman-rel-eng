@@ -10,8 +10,8 @@ TARDIR="$RELEASEDIR/tarballs"
 EXTRASDIR="$RELEASEDIR/extras"
 HOSTS="theforeman.org,"
 DOCROOT="/var/www/vhosts/downloads/htdocs"
-PASS_NAME_GPG="theforeman/release/$VERSION-gpg"
-PASS_NAME_KEY="theforeman/release/$VERSION-key"
+PASS_NAME_GPG="theforeman/releases/foreman/$VERSION-gpg"
+PASS_NAME_KEY="theforeman/releases/foreman/$VERSION-key"
 XARGS_JOBS="-n 20 -P 4"
 GIT_DIR="$HOME/dev"
 PACKAGING_DIR="$GIT_DIR/foreman-packaging"
@@ -26,11 +26,11 @@ PACKAGING_PR=true
 . "$RELEASEDIR/settings"
 
 copy_gpg_key() {
-	pass show -c "$PASS_NAME_GPG"
+	gopass show -c "$PASS_NAME_GPG"
 }
 
 copy_unix_pass() {
-	pass show -c "theforeman/unix"
+	gopass show -c "theforeman/unix"
 }
 
 # vim: ft=sh

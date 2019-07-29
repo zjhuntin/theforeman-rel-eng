@@ -20,7 +20,7 @@ def parse_pass_lines(lines):
 
 def get_pass(name):
     try:
-        output = subprocess.check_output(['pass', 'show', name], universal_newlines=True)
+        output = subprocess.check_output(['gopass', 'show', name], universal_newlines=True)
     except subprocess.CalledProcessError:
         return None, {}
 

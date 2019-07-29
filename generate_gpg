@@ -9,7 +9,7 @@ fi
 
 mkdir -m 0700 $KEYDIR
 
-( pass show "$PASS_NAME_GPG" || pass generate "$PASS_NAME_GPG" 20 ) > /dev/null
+( gopass show "$PASS_NAME_GPG" 2> /dev/null || gopass generate "$PASS_NAME_GPG" 20 ) > /dev/null
 
 GPG_SETTINGS=$(mktemp)
 trap "rm -f $GPG_SETTINGS" EXIT
@@ -21,7 +21,7 @@ cat > $GPG_SETTINGS <<EOF
      Name-Comment: $VERSION
      Name-Email: $SIGNER
      Expire-Date: 1y
-     Passphrase: $(pass show "$PASS_NAME_GPG")
+     Passphrase: $(gopass show "$PASS_NAME_GPG")
      # Do a commit here, so that we can later print "done" :-)
      %commit
      %echo done
