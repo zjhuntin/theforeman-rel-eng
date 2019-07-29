@@ -9,8 +9,19 @@ fi
 
 if [[ -z $FULLGPGKEY ]] ; then
 	echo "FULLGPGKEY must be set"
+	gpg2 --homedir "$KEYDIR" --list-keys "$VERSION"
 	exit 2
 fi
 
 gpg2 --homedir "$KEYDIR" --armor --export "$FULLGPGKEY" | gpg2 --import
+
+echo ""
+echo "Opening GPG to sign the key"
+echo ""
+echo "Use fpr to see the fingerprint"
+echo "Use sign to sign the new key"
+echo ""
+echo "https://projects.theforeman.org/projects/foreman/wiki/GPG_Keys"
+echo ""
+
 gpg2 --edit-key "$FULLGPGKEY"
