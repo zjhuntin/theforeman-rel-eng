@@ -27,3 +27,6 @@ cat > $GPG_SETTINGS <<EOF
      %echo done
 EOF
 gpg2 --homedir $KEYDIR --batch --gen-key $GPG_SETTINGS
+
+echo "Now set GPGKEY and FULLGPGKEY in releases/$VERSION/settings"
+gpg2 --homedir "$KEYDIR" --list-key "$SIGNER"
