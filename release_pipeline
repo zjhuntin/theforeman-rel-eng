@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+. settings
+
+./ci-jobs release-$VERSION-release-pipeline $FULLVERSION

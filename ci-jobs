@@ -71,11 +71,17 @@ def build(job, version, wait):
         click.echo('Hello %s from Jenkins %s' % (user['fullName'], version))
         return
 
-    major, minor, _ = version.split('.', 2)
-    parameters = {
-        'version': version,
-        'major_version': f'{major}.{minor}',
-    }
+    if job in ('release_packages', 'tarballs-release'):
+        major, minor, _ = version.split('.', 2)
+        parameters = {
+            'version': version,
+            'major_version': f'{major}.{minor}',
+        }
+    else:
+        # Assume it's foreman-$VERSION-release-pipeline
+        parameters = {
+            'expected_version': version,
+        }
 
     # Get the last build so we can poll later
     build_number_before = get_last_build_number(server, job)
