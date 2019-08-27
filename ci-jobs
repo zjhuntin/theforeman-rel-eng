@@ -8,8 +8,7 @@ from time import sleep
 import click
 import jenkins
 
-JOBS = ['ping', 'tarballs-release', 'release_packages', 'release_mash',
-        'release_push_deb', 'release_push_rpm']
+JOBS = ['ping', 'tarballs-release', 'release_packages', 'foreman-release-pipeline']
 
 
 def parse_pass_lines(lines):
@@ -77,8 +76,9 @@ def build(job, version, wait):
             'version': version,
             'major_version': f'{major}.{minor}',
         }
-    else:
-        # Assume it's foreman-$VERSION-release-pipeline
+    elif job == 'foreman-release-pipeline':
+        major, minor, _ = version.split('.', 2)
+        job = f'foreman-{major}.{minor}-release-pipeline'
         parameters = {
             'expected_version': version,
         }
