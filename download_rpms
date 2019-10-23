@@ -8,13 +8,10 @@ cd "$RPMDIR"
 tags=""
 
 for os in $OSES; do
-  tags="foreman-$VERSION-$os"
-  [[ -n $ROR_BASE_TAG ]] && tags="$tags $ROR_BASE_TAG-$os"
-  [[ $os =~ rhel ]] && tags="$tags foreman-$VERSION-nonscl-$os"
-done
-
-for os in $CLIENT_OSES; do
-  tags="$tags foreman-client-$VERSION-$os"
+  versioned_tags=$(echo ${KOJI_TAGS} | sed "s/@VERSION@/$VERSION/g; s/@OS@/$os/g")
+  for tag in ${versioned_tags}; do
+    tags="$tags $tag"
+  done
 done
 
 for tag in $tags; do
@@ -23,4 +20,4 @@ done \
   | sed 's!^!:!' \
   | perl -ane '$F[1] =~ s!\.src$!! or next; $R{$F[1]} = 1; $S{$F[1]} = 1 if lc($F[0]) eq lc(":'$GPGKEY'");
     END { print map "$_\n", grep { not exists $S{$_} } sort keys %R }' \
-  | xargs --no-run-if-empty -P 2 -n 1 koji download-build --debuginfo $tag
+  | xargs --no-run-if-empty -P 2 -n 1 koji download-build --debuginfo
