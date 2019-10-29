@@ -39,7 +39,7 @@ When starting a new release, the following scripts can be used to generate a new
 
 ```bash
 generate_gpg
-# Now set GPGKEY and FULLGPGKEY in releases/$VERSION/settings
+# Now set FULLGPGKEY in releases/$VERSION/settings
 export_gpg_private
 export_gpg_public
 sign_gpg

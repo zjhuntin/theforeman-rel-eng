@@ -56,6 +56,9 @@ fi
 # Expected: GPGKEY FULLGPGKEY FULLVERSION
 . "$RELEASEDIR/settings"
 
+# Short GPGKEY is used by koji and is the last 8 chars or the full key
+GPGKEY="$(echo ${FULLGPGKEY: -8} | tr '[A-Z]' '[a-z]')"
+
 copy_gpg_key() {
 	gopass show -c "$PASS_NAME_GPG"
 }
