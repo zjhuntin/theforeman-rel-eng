@@ -7,6 +7,12 @@ if [[ -d $KEYDIR ]] ; then
 	exit 1
 fi
 
+if [[ -n $FULLGPGKEY ]] ; then
+	echo "The full GPG key is already set for $VERSION"
+	echo "You need to use import_gpg_private or remove the setting"
+	exit 2
+fi
+
 mkdir -m 0700 $KEYDIR
 
 ( gopass show "$PASS_NAME_GPG" 2> /dev/null || gopass generate "$PASS_NAME_GPG" 20 ) > /dev/null
