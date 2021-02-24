@@ -24,10 +24,16 @@ for project in $PROJECTS ; do
 		git checkout "${VERSION}-stable"
 		git pull --quiet
 		echo "$FULLVERSION" > VERSION
-		if [[ $project != foreman-installer ]] ; then
-			./extras/changelog
-		fi
 		git commit --quiet --all --message "Release $FULLVERSION"
+		if [ -x ./extras/changelog ] ; then
+			./extras/changelog
+			git commit --amend --quiet --all --no-edit
+		fi
+		if [ -x ./extra/changelog ] ; then
+			./extra/changelog
+			git commit --amend --quiet --all --no-edit
+		fi
 		git tag --sign --message "Release $FULLVERSION" "$FULLVERSION"
+		echo "Tagged ${project} ${FULLVERSION}"
 	)
 done
