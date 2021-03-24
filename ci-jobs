@@ -128,9 +128,10 @@ def release(args):
 
 def pipeline(args):
     try:
-        major, minor, _ = args.version.split('.', 2)
+        major, minor = args.version.split('.', 2)[:2]
     except ValueError:
-        raise argparse.ArgumentTypeError('Pass in the full version like 1.24.0-RC1')
+        msg = 'Pass in the version like 2.4.0-RC1 or 2.4, depending on the pipeline'
+        raise argparse.ArgumentTypeError(msg)
 
     parameters = None
 
